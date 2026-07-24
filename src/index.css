@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+@media print {
+  /* Sayfadaki kilitli yükseklik ve gizleme kısıtlamalarını kaldırıyoruz */
+  html, body, #root, div {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  /* Yazdırma esnasında arka planı beyaz, yazıları siyah yapıyoruz */
+  body {
+    background-color: white !important;
+    color: black !important;
+  }
+}
