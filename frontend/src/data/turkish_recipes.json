@@ -1,0 +1,338 @@
+[
+  {
+    "id": "tr_m1",
+    "title": "Kuru Fasulye",
+    "category": "main",
+    "cuisine": "tr",
+    "isGlutenFree": true,
+    "isVegan": true,
+    "calories": 330,
+    "ingredients": [
+      { "name": "Kuru Fasulye", "amount": 2, "unit": "su bardağı" },
+      { "name": "Kuru Soğan", "amount": 1, "unit": "adet" },
+      { "name": "Domates Salçası", "amount": 1, "unit": "yemek kaşığı" },
+      { "name": "Tereyağı", "amount": 1, "unit": "yemek kaşığı" }
+    ]
+  },
+  {
+    "id": "tr_m2",
+    "title": "Ev Yapımı İnegöl Köfte",
+    "category": "main",
+    "cuisine": "tr",
+    "isGlutenFree": false,
+    "isVegan": false,
+    "calories": 420,
+    "ingredients": [
+      { "name": "Kıyma", "amount": 500, "unit": "gram" },
+      { "name": "Kuru Soğan", "amount": 1, "unit": "adet" },
+      { "name": "Ekmek İçi", "amount": 2, "unit": "dilim" },
+      { "name": "Karabiber", "amount": 1, "unit": "tatlı kaşığı" }
+    ]
+  },
+  {
+    "id": "tr_m3",
+    "title": "Karnıyarık",
+    "category": "main",
+    "cuisine": "tr",
+    "isGlutenFree": true,
+    "isVegan": false,
+    "calories": 350,
+    "ingredients": [
+      { "name": "Patlıcan", "amount": 4, "unit": "adet" },
+      { "name": "Kıyma", "amount": 250, "unit": "gram" },
+      { "name": "Domates", "amount": 2, "unit": "adet" },
+      { "name": "Sarımsak", "amount": 3, "unit": "diş" }
+    ]
+  },
+  {
+    "id": "tr_m4",
+    "title": "Tavuk Sote",
+    "category": "main",
+    "cuisine": "tr",
+    "isGlutenFree": true,
+    "isVegan": false,
+    "calories": 310,
+    "ingredients": [
+      { "name": "Tavuk Göğsü", "amount": 500, "unit": "gram" },
+      { "name": "Sivri Biber", "amount": 2, "unit": "adet" },
+      { "name": "Domates", "amount": 2, "unit": "adet" },
+      { "name": "Kuru Soğan", "amount": 1, "unit": "adet" }
+    ]
+  },
+  {
+    "id": "tr_m5",
+    "title": "Fırında Salçalı Köfte Patates",
+    "category": "main",
+    "cuisine": "tr",
+    "isGlutenFree": true,
+    "isVegan": false,
+    "calories": 460,
+    "ingredients": [
+      { "name": "Kıyma", "amount": 400, "unit": "gram" },
+      { "name": "Patates", "amount": 3, "unit": "adet" },
+      { "name": "Domates Salçası", "amount": 1, "unit": "yemek kaşığı" },
+      { "name": "Sarımsak", "amount": 2, "unit": "diş" }
+    ]
+  },
+  {
+    "id": "tr_m6",
+    "title": "Orman Kebabı",
+    "category": "main",
+    "cuisine": "tr",
+    "isGlutenFree": true,
+    "isVegan": false,
+    "calories": 380,
+    "ingredients": [
+      { "name": "Kuşbaşı Et", "amount": 500, "unit": "gram" },
+      { "name": "Bezelye", "amount": 1, "unit": "su bardağı" },
+      { "name": "Havuç", "amount": 1, "unit": "adet" },
+      { "name": "Patates", "amount": 1, "unit": "adet" }
+    ]
+  },
+  {
+    "id": "tr_m7",
+    "title": "Izgara Tavuk Pirzola",
+    "category": "main",
+    "cuisine": "tr",
+    "isGlutenFree": true,
+    "isVegan": false,
+    "calories": 340,
+    "ingredients": [
+      { "name": "Tavuk Pirzola", "amount": 6, "unit": "adet" },
+      { "name": "Zeytinyağı", "amount": 2, "unit": "yemek kaşığı" },
+      { "name": "Kekik", "amount": 1, "unit": "tatlı kaşığı" },
+      { "name": "Pul Biber", "amount": 1, "unit": "tatlı kaşığı" }
+    ]
+  },
+  {
+    "id": "tr_m8",
+    "title": "Kıymalı Taze Fasulye",
+    "category": "main",
+    "cuisine": "tr",
+    "isGlutenFree": true,
+    "isVegan": false,
+    "calories": 220,
+    "ingredients": [
+      { "name": "Taze Fasulye", "amount": 500, "unit": "gram" },
+      { "name": "Kıyma", "amount": 150, "unit": "gram" },
+      { "name": "Domates", "amount": 2, "unit": "adet" },
+      { "name": "Kuru Soğan", "amount": 1, "unit": "adet" }
+    ]
+  },
+  {
+    "id": "tr_m9",
+    "title": "Izgara Somon",
+    "category": "main",
+    "cuisine": "tr",
+    "isGlutenFree": true,
+    "isVegan": false,
+    "calories": 410,
+    "ingredients": [
+      { "name": "Somon Fileto", "amount": 2, "unit": "dilim" },
+      { "name": "Limon", "amount": 1, "unit": "adet" },
+      { "name": "Zeytinyağı", "amount": 1, "unit": "yemek kaşığı" }
+    ]
+  },
+  {
+    "id": "tr_s1",
+    "title": "Şehriyeli Pirinç Pilavı",
+    "category": "side",
+    "cuisine": "tr",
+    "isGlutenFree": true,
+    "isVegan": false,
+    "calories": 280,
+    "ingredients": [
+      { "name": "Pirinç", "amount": 2, "unit": "su bardağı" },
+      { "name": "Tereyağı", "amount": 2, "unit": "yemek kaşığı" },
+      { "name": "Arpa Şehriye", "amount": 0.5, "unit": "su bardağı" }
+    ]
+  },
+  {
+    "id": "tr_s2",
+    "title": "Meyhane Usulü Bulgur Pilavı",
+    "category": "side",
+    "cuisine": "tr",
+    "isGlutenFree": true,
+    "isVegan": false,
+    "calories": 230,
+    "ingredients": [
+      { "name": "Pilavlık Bulgur", "amount": 2, "unit": "su bardağı" },
+      { "name": "Domates", "amount": 2, "unit": "adet" },
+      { "name": "Biber", "amount": 2, "unit": "adet" },
+      { "name": "Kuru Soğan", "amount": 1, "unit": "adet" }
+    ]
+  },
+  {
+    "id": "tr_s3",
+    "title": "Fırında Kremalı Patates",
+    "category": "side",
+    "cuisine": "tr",
+    "isGlutenFree": true,
+    "isVegan": false,
+    "calories": 320,
+    "ingredients": [
+      { "name": "Patates", "amount": 4, "unit": "adet" },
+      { "name": "Sıvı Krema", "amount": 1, "unit": "paket" },
+      { "name": "Rendelenmiş Kaşar Peyniri", "amount": 1, "unit": "su bardağı" }
+    ]
+  },
+  {
+    "id": "tr_s4",
+    "title": "Kıymalı / Soslu Makarna",
+    "category": "side",
+    "cuisine": "tr",
+    "isGlutenFree": true,
+    "isVegan": false,
+    "calories": 310,
+    "ingredients": [
+      { "name": "Makarna", "amount": 1, "unit": "paket" },
+      { "name": "Domates Salçası", "amount": 1.5, "unit": "yemek kaşığı" },
+      { "name": "Tereyağı", "amount": 1, "unit": "yemek kaşığı" }
+    ]
+  },
+  {
+    "id": "tr_s5",
+    "title": "Sebzeli Noodle / Erişte",
+    "category": "side",
+    "cuisine": "tr",
+    "isGlutenFree": true,
+    "isVegan": false,
+    "calories": 340,
+    "ingredients": [
+      { "name": "Ev Eriştesi", "amount": 2, "unit": "su bardağı" },
+      { "name": "Ceviz İçi", "amount": 0.5, "unit": "su bardağı" },
+      { "name": "Tereyağı", "amount": 2, "unit": "yemek kaşığı" }
+    ]
+  },
+  {
+    "id": "tr_s6",
+    "title": "Patates Püresi",
+    "category": "side",
+    "cuisine": "tr",
+    "isGlutenFree": true,
+    "isVegan": false,
+    "calories": 190,
+    "ingredients": [
+      { "name": "Patates", "amount": 4, "unit": "adet" },
+      { "name": "Süt", "amount": 0.5, "unit": "su bardağı" },
+      { "name": "Tereyağı", "amount": 1, "unit": "yemek kaşığı" }
+    ]
+  },
+  {
+    "id": "tr_s7",
+    "title": "Mısırlı Pirinç Pilavı",
+    "category": "side",
+    "cuisine": "tr",
+    "isGlutenFree": true,
+    "isVegan": false,
+    "calories": 290,
+    "ingredients": [
+      { "name": "Pirinç", "amount": 2, "unit": "su bardağı" },
+      { "name": "Mısır", "amount": 1, "unit": "su bardağı" },
+      { "name": "Tereyağı", "amount": 2, "unit": "yemek kaşığı" }
+    ]
+  },
+  {
+    "id": "tr_s8",
+    "title": "Nohutlu Pirinç Pilavı",
+    "category": "side",
+    "cuisine": "tr",
+    "isGlutenFree": true,
+    "isVegan": false,
+    "calories": 310,
+    "ingredients": [
+      { "name": "Pirinç", "amount": 2, "unit": "su bardağı" },
+      { "name": "Nohut", "amount": 1, "unit": "su bardağı" },
+      { "name": "Tereyağı", "amount": 2, "unit": "yemek kaşığı" }
+    ]
+  },
+  {
+    "id": "tr_a1",
+    "title": "Süzme Mercimek Çorbası",
+    "category": "extra",
+    "cuisine": "tr",
+    "isGlutenFree": true,
+    "isVegan": false,
+    "calories": 180,
+    "ingredients": [
+      { "name": "Kırmızı Mercimek", "amount": 1.5, "unit": "su bardağı" },
+      { "name": "Havuç", "amount": 1, "unit": "adet" },
+      { "name": "Patates", "amount": 1, "unit": "adet" },
+      { "name": "Un", "amount": 1, "unit": "yemek kaşığı" }
+    ]
+  },
+  {
+    "id": "tr_a2",
+    "title": "Sarımsaklı Haydari",
+    "category": "extra",
+    "cuisine": "tr",
+    "isGlutenFree": true,
+    "isVegan": false,
+    "calories": 130,
+    "ingredients": [
+      { "name": "Süzme Yoğurt", "amount": 4, "unit": "yemek kaşığı" },
+      { "name": "Nane", "amount": 1, "unit": "tatlı kaşığı" },
+      { "name": "Sarımsak", "amount": 2, "unit": "diş" },
+      { "name": "Zeytinyağı", "amount": 1, "unit": "yemek kaşığı" }
+    ]
+  },
+  {
+    "id": "tr_a3",
+    "title": "Yoğurtlu Köz Patlıcan Salatası",
+    "category": "extra",
+    "cuisine": "tr",
+    "isGlutenFree": true,
+    "isVegan": false,
+    "calories": 110,
+    "ingredients": [
+      { "name": "Közlenmiş Patlıcan", "amount": 3, "unit": "adet" },
+      { "name": "Süzme Yoğurt", "amount": 3, "unit": "yemek kaşığı" },
+      { "name": "Sarımsak", "amount": 2, "unit": "diş" }
+    ]
+  },
+  {
+    "id": "tr_a4",
+    "title": "Ezogelin Çorbası",
+    "category": "extra",
+    "cuisine": "tr",
+    "isGlutenFree": true,
+    "isVegan": false,
+    "calories": 190,
+    "ingredients": [
+      { "name": "Kırmızı Mercimek", "amount": 1, "unit": "su bardağı" },
+      { "name": "Bulgur", "amount": 1, "unit": "yemek kaşığı" },
+      { "name": "Pirinç", "amount": 1, "unit": "yemek kaşığı" },
+      { "name": "Domates Salçası", "amount": 1, "unit": "yemek kaşığı" }
+    ]
+  },
+  {
+    "id": "tr_a5",
+    "title": "Şakşuka",
+    "category": "extra",
+    "cuisine": "tr",
+    "isGlutenFree": true,
+    "isVegan": true,
+    "calories": 160,
+    "ingredients": [
+      { "name": "Patlıcan", "amount": 2, "unit": "adet" },
+      { "name": "Kabak", "amount": 1, "unit": "adet" },
+      { "name": "Domates", "amount": 2, "unit": "adet" },
+      { "name": "Sarımsak", "amount": 2, "unit": "diş" }
+    ]
+  },
+  {
+    "id": "tr_a6",
+    "title": "Amerikan / Rus Salatası",
+    "category": "extra",
+    "cuisine": "tr",
+    "isGlutenFree": true,
+    "isVegan": false,
+    "calories": 240,
+    "ingredients": [
+      { "name": "Garnitür (Havuç-Bezelye-Patates)", "amount": 1, "unit": "kavanoz" },
+      { "name": "Mayonez", "amount": 3, "unit": "yemek kaşığı" },
+      { "name": "Yoğurt", "amount": 2, "unit": "yemek kaşığı" },
+      { "name": "Kornişon Turşu", "amount": 5, "unit": "adet" }
+    ]
+  }
+]

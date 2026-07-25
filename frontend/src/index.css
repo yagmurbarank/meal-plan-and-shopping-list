@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@media print {
+  html, body, #root, div {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  body {
+    background-color: white !important;
+    color: black !important;
+  }
+}

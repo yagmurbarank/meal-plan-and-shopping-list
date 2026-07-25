@@ -1,0 +1,60 @@
+[
+  {
+    "id": "world_m1",
+    "title": "Tavuklu Pad Thai",
+    "category": "main",
+    "cuisine": "world",
+    "isGlutenFree": true,
+    "isVegan": false,
+    "calories": 480,
+    "ingredients": [
+      { "name": "Pirinç Eriştesi (Noodle)", "amount": 200, "unit": "gram" },
+      { "name": "Tavuk Göğsü", "amount": 300, "unit": "gram" },
+      { "name": "Soya Filizi", "amount": 1, "unit": "su bardağı" },
+      { "name": "Fıstık İçi", "amount": 2, "unit": "yemek kaşığı" }
+    ]
+  },
+  {
+    "id": "world_m2",
+    "title": "Meksika Usulü Etsiz Burrito",
+    "category": "main",
+    "cuisine": "world",
+    "isGlutenFree": false,
+    "isVegan": true,
+    "calories": 410,
+    "ingredients": [
+      { "name": "Tortilla Ekmeği", "amount": 2, "unit": "adet" },
+      { "name": "Siyah Fasulye", "amount": 1, "unit": "su bardağı" },
+      { "name": "Mısır", "amount": 0.5, "unit": "su bardağı" },
+      { "name": "Avokado", "amount": 1, "unit": "adet" }
+    ]
+  },
+  {
+    "id": "world_s1",
+    "title": "Sezar Salatası",
+    "category": "side",
+    "cuisine": "world",
+    "isGlutenFree": false,
+    "isVegan": false,
+    "calories": 260,
+    "ingredients": [
+      { "name": "Marul", "amount": 1, "unit": "demet" },
+      { "name": "Kruton Ekmek", "amount": 1, "unit": "su bardağı" },
+      { "name": "Parmesan Peyniri", "amount": 50, "unit": "gram" }
+    ]
+  },
+  {
+    "id": "world_a1",
+    "title": "Minestrone Sebze Çorbası",
+    "category": "extra",
+    "cuisine": "world",
+    "isGlutenFree": false,
+    "isVegan": true,
+    "calories": 160,
+    "ingredients": [
+      { "name": "Kabak", "amount": 1, "unit": "adet" },
+      { "name": "Havuç", "amount": 1, "unit": "adet" },
+      { "name": "Barbunya", "amount": 0.5, "unit": "su bardağı" }
+    ]
+  }
+]
