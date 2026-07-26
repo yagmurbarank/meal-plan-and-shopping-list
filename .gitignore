@@ -39,6 +39,7 @@ HELP.md
 *.njsproj
 *.sln
 *.sw?
+.env
 
 ### Eclipse / STS ###
 .apt_generated
