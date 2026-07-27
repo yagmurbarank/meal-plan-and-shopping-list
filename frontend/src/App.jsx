@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { fetchRecipes } from "./services/recipeService";
-import Logo from "./components/Logo"; // Eger Logo.jsx ise
+import Logo from "./components/Logo";
+import AddRecipeModal from "./AddRecipeModal";
 import {
   isRecipeGlutenFree,
   isRecipeVegan,
@@ -18,7 +19,10 @@ export default function App() {
 
   const [onlyGlutenFree, setOnlyGlutenFree] = useState(false);
   const [onlyVegan, setOnlyVegan] = useState(false);
-  const [onlyWorldCuisine, setOnlyWorldCuisine] = useState(false); // 🌍 Dünya Mutfağı filtresi
+  const [onlyWorldCuisine, setOnlyWorldCuisine] = useState(false);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   const [servings, setServings] = useState(2);
   const [tempDaySelection, setTempDaySelection] = useState({
@@ -32,13 +36,21 @@ export default function App() {
   const [searchExtra, setSearchExtra] = useState("");
 
   const [copied, setCopied] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const isMainCourseSelected = Boolean(tempDaySelection.main);
+
+  const handleRecipeAdded = () => {
+    setRefreshTrigger((prev) => prev + 1);
+  };
 
   useEffect(() => {
+    setLoading(true);
     fetchRecipes().then((data) => {
       setRecipes(data);
       setLoading(false);
     });
-  }, []);
+  }, [refreshTrigger]);
 
   const usedRecipeIds = useMemo(() => {
     return selectedRecipes
@@ -72,8 +84,13 @@ export default function App() {
   }, []);
 
   const handleNextDay = () => {
-    if (!tempDaySelection.main) {
-      alert("Lütfen en az bir Ana Yemek seçin!");
+
+    if (!isMainCourseSelected) {
+      setErrorMessage("Lütfen en az bir Ana Yemek seçin!");
+
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 2000);
       return;
     }
 
@@ -97,7 +114,8 @@ export default function App() {
         { day: currentDay, servings, ...tempDaySelection },
       ]);
     } else if (selectedRecipes.length === 0) {
-      alert("Lütfen en az 1 günlük menü seçin!");
+      setErrorMessage("Lütfen en az 1 günlük menü seçin!");
+      setTimeout(() => setErrorMessage(""), 3000);
       return;
     }
 
@@ -134,7 +152,9 @@ export default function App() {
   if (loading) {
     return (
       <div
-        className={`h-screen flex items-center justify-center font-sans ${isDark ? "bg-slate-950 text-rose-300" : "bg-sky-50 text-sky-800"}`}
+        className={`h-screen flex items-center justify-center font-sans ${
+          isDark ? "bg-slate-950 text-rose-300" : "bg-sky-50 text-sky-800"
+        }`}
       >
         <p className="animate-pulse text-lg font-bold">
           Menüler Yükleniyor... 🍲
@@ -151,6 +171,35 @@ export default function App() {
           : "bg-gradient-to-br from-sky-100 via-sky-50 to-emerald-50 text-slate-800"
       }`}
     >
+
+      {errorMessage && (
+        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-200 animate-bounce">
+          <div
+            onClick={() => setErrorMessage("")}
+            className={`px-5 py-2.5 rounded-xl shadow-lg flex items-center gap-3 border text-xs sm:text-sm font-semibold backdrop-blur-md cursor-pointer select-none transition-all ${
+              isDark
+                ? "bg-rose-900/95 border-rose-600 text-rose-100 shadow-rose-950/60"
+                : "bg-red-600/95 border-red-400 text-white shadow-red-600/30"
+            }`}
+          >
+    
+            <span className="text-base bg-white/20 p-1 rounded-lg">⚠️</span>
+
+            <span className="font-medium tracking-wide">{errorMessage}</span>
+
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setErrorMessage("");
+              }}
+              className="ml-2 p-1 hover:bg-white/20 rounded-md text-xs opacity-80 hover:opacity-100 transition-all"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
+
       <div
         className={`absolute inset-0 bg-cover bg-center bg-no-repeat pointer-events-none print:hidden transition-opacity duration-300 ${
           isDark ? "opacity-10 blur-[2px]" : "opacity-20 blur-[1px]"
@@ -177,12 +226,16 @@ export default function App() {
 
             <div>
               <h1
-                className={`text-lg font-bold flex items-center gap-2 ${isDark ? "text-rose-300" : "text-sky-900"}`}
+                className={`text-lg font-bold flex items-center gap-2 ${
+                  isDark ? "text-rose-300" : "text-sky-900"
+                }`}
               >
                 Menü & Alışveriş Planlayıcı
               </h1>
               <p
-                className={`text-xs mt-0.5 ${isDark ? "text-slate-400" : "text-slate-600"}`}
+                className={`text-xs mt-0.5 ${
+                  isDark ? "text-slate-400" : "text-slate-600"
+                }`}
               >
                 {!isFinished
                   ? `${currentDay}. Gün Menüsünü Oluşturuyorsun`
@@ -191,7 +244,18 @@ export default function App() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className={`font-bold px-3 py-1.5 rounded-xl text-xs sm:text-sm transition-all shadow-md print:hidden flex items-center gap-1 ${
+                isDark
+                  ? "bg-rose-900 hover:bg-rose-800 text-rose-100 border border-rose-700/60"
+                  : "bg-sky-800 hover:bg-sky-900 text-white"
+              }`}
+            >
+              ➕ <span className="hidden sm:inline">Yeni Tarif Ekle</span>
+            </button>
+
             <button
               onClick={toggleTheme}
               className={`px-3 py-1.5 rounded-xl border text-xs font-semibold flex items-center gap-1.5 transition-all print:hidden ${
@@ -212,7 +276,9 @@ export default function App() {
                 }`}
               >
                 <span
-                  className={`text-xs font-medium hidden sm:inline ${isDark ? "text-slate-300" : "text-sky-900"}`}
+                  className={`text-xs font-medium hidden sm:inline ${
+                    isDark ? "text-slate-300" : "text-sky-900"
+                  }`}
                 >
                   👥 Kişi Sayısı:
                 </span>
@@ -228,7 +294,9 @@ export default function App() {
                     -
                   </button>
                   <span
-                    className={`text-sm font-bold min-w-[20px] text-center ${isDark ? "text-rose-200" : "text-sky-900"}`}
+                    className={`text-sm font-bold min-w-[20px] text-center ${
+                      isDark ? "text-rose-200" : "text-sky-900"
+                    }`}
                   >
                     {servings}x
                   </span>
@@ -248,6 +316,7 @@ export default function App() {
           </div>
         </header>
 
+        {/* Filtre Barı */}
         {!isFinished && (
           <div
             className={`flex flex-wrap items-center justify-start gap-4 mb-3 px-3 py-2 rounded-xl border print:hidden transition-colors ${
@@ -257,7 +326,9 @@ export default function App() {
             }`}
           >
             <span
-              className={`text-xs font-bold ${isDark ? "text-rose-300" : "text-sky-900"}`}
+              className={`text-xs font-bold ${
+                isDark ? "text-rose-300" : "text-sky-900"
+              }`}
             >
               🔍 Filtreler:
             </span>
@@ -294,30 +365,34 @@ export default function App() {
         {!isFinished ? (
           <div className="flex flex-col flex-grow overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 flex-grow overflow-hidden">
-              {/* 🔴 1. ANA YEMEK */}
+    
               <section
                 className={`p-3 rounded-xl border flex flex-col overflow-hidden relative ${
                   isDark ? "border-rose-900/50" : "border-rose-200"
                 }`}
               >
                 <div
-                  className={`absolute inset-0 bg-cover bg-center pointer-events-none ${isDark ? "opacity-20" : "opacity-15"}`}
+                  className={`absolute inset-0 bg-cover bg-center pointer-events-none ${
+                    isDark ? "opacity-20" : "opacity-15"
+                  }`}
                   style={{
                     backgroundImage: `url('https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80')`,
                   }}
                 />
                 <div
-                  className={`absolute inset-0 pointer-events-none ${isDark ? "bg-slate-950/75" : "bg-rose-50/85"}`}
+                  className={`absolute inset-0 pointer-events-none ${
+                    isDark ? "bg-slate-950/75" : "bg-rose-50/85"
+                  }`}
                 />
 
                 <div className="relative z-10 flex flex-col h-full overflow-hidden">
-                  <h2 className="font-semibold text-xs mb-2">
+                  <h2 className="font-semibold text-sm mb-2">
                     <span
                       className={
                         isDark ? "text-rose-300" : "text-rose-800 font-bold"
                       }
                     >
-                      🔴 1. Ana Yemek
+                      Ana Yemek
                     </span>
                   </h2>
                   <input
@@ -383,23 +458,27 @@ export default function App() {
                 }`}
               >
                 <div
-                  className={`absolute inset-0 bg-cover bg-center pointer-events-none ${isDark ? "opacity-20" : "opacity-15"}`}
+                  className={`absolute inset-0 bg-cover bg-center pointer-events-none ${
+                    isDark ? "opacity-20" : "opacity-15"
+                  }`}
                   style={{
                     backgroundImage: `url('https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80')`,
                   }}
                 />
                 <div
-                  className={`absolute inset-0 pointer-events-none ${isDark ? "bg-slate-950/75" : "bg-amber-50/85"}`}
+                  className={`absolute inset-0 pointer-events-none ${
+                    isDark ? "bg-slate-950/75" : "bg-amber-50/85"
+                  }`}
                 />
 
                 <div className="relative z-10 flex flex-col h-full overflow-hidden">
-                  <h2 className="font-semibold text-xs mb-2">
+                  <h2 className="font-semibold text-sm mb-2">
                     <span
                       className={
                         isDark ? "text-amber-300" : "text-amber-900 font-bold"
                       }
                     >
-                      🟡 2. Eşlikçi
+                      Eşlikçi
                     </span>
                   </h2>
                   <input
@@ -465,17 +544,21 @@ export default function App() {
                 }`}
               >
                 <div
-                  className={`absolute inset-0 bg-cover bg-center pointer-events-none ${isDark ? "opacity-20" : "opacity-15"}`}
+                  className={`absolute inset-0 bg-cover bg-center pointer-events-none ${
+                    isDark ? "opacity-20" : "opacity-15"
+                  }`}
                   style={{
                     backgroundImage: `url('https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80')`,
                   }}
                 />
                 <div
-                  className={`absolute inset-0 pointer-events-none ${isDark ? "bg-slate-950/75" : "bg-emerald-50/85"}`}
+                  className={`absolute inset-0 pointer-events-none ${
+                    isDark ? "bg-slate-950/75" : "bg-emerald-50/85"
+                  }`}
                 />
 
                 <div className="relative z-10 flex flex-col h-full overflow-hidden">
-                  <h2 className="font-semibold text-xs mb-2">
+                  <h2 className="font-semibold text-sm mb-2">
                     <span
                       className={
                         isDark
@@ -483,7 +566,7 @@ export default function App() {
                           : "text-emerald-900 font-bold"
                       }
                     >
-                      🟢 3. Çorba / Meze
+                      Çorba / Meze
                     </span>
                   </h2>
                   <input
@@ -568,11 +651,13 @@ export default function App() {
             </div>
           </div>
         ) : (
-
+     
           <div className="flex flex-col flex-grow overflow-hidden print:overflow-visible print:h-auto py-1">
             <div className="flex justify-between items-center mb-3 flex-shrink-0">
               <h2
-                className={`text-base font-bold flex items-center gap-2 ${isDark ? "text-rose-300" : "text-sky-900"}`}
+                className={`text-base font-bold flex items-center gap-2 ${
+                  isDark ? "text-rose-300" : "text-sky-900"
+                }`}
               >
                 🎉 {selectedRecipes.length} Günlük Menün & Alışveriş Listen
                 Hazır!
@@ -602,7 +687,6 @@ export default function App() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-grow overflow-hidden print:overflow-visible print:h-auto print:grid-cols-2">
-              {/* 📅 SOL SÜTUN */}
               <div
                 className={`rounded-xl p-3 border flex flex-col overflow-hidden print:overflow-visible print:h-auto ${
                   isDark
@@ -669,26 +753,6 @@ export default function App() {
                             Ana:
                           </span>{" "}
                           {item.main.title}
-                          {item.main.cuisine === "world" && (
-                            <span title="Dünya Mutfağı">🌍</span>
-                          )}
-                          {isRecipeGlutenFree(item.main) && (
-                            <span title="Glutensiz">🌾</span>
-                          )}
-                          {isRecipeVegan(item.main) && (
-                            <span title="Vegan">🌱</span>
-                          )}
-                          {item.main.calories && (
-                            <span
-                              className={`text-[10px] px-1.5 py-0.5 rounded font-semibold ${
-                                isDark
-                                  ? "bg-amber-950/80 text-amber-300"
-                                  : "bg-amber-100 text-amber-900"
-                              }`}
-                            >
-                              🔥 {item.main.calories} kcal
-                            </span>
-                          )}
                         </p>
                       )}
 
@@ -704,26 +768,6 @@ export default function App() {
                             Eşlikçi:
                           </span>{" "}
                           {item.side.title}
-                          {item.side.cuisine === "world" && (
-                            <span title="Dünya Mutfağı">🌍</span>
-                          )}
-                          {isRecipeGlutenFree(item.side) && (
-                            <span title="Glutensiz">🌾</span>
-                          )}
-                          {isRecipeVegan(item.side) && (
-                            <span title="Vegan">🌱</span>
-                          )}
-                          {item.side.calories && (
-                            <span
-                              className={`text-[10px] px-1.5 py-0.5 rounded font-semibold ${
-                                isDark
-                                  ? "bg-amber-950/80 text-amber-300"
-                                  : "bg-amber-100 text-amber-900"
-                              }`}
-                            >
-                              🔥 {item.side.calories} kcal
-                            </span>
-                          )}
                         </p>
                       )}
 
@@ -739,26 +783,6 @@ export default function App() {
                             Ekstra:
                           </span>{" "}
                           {item.extra.title}
-                          {item.extra.cuisine === "world" && (
-                            <span title="Dünya Mutfağı">🌍</span>
-                          )}
-                          {isRecipeGlutenFree(item.extra) && (
-                            <span title="Glutensiz">🌾</span>
-                          )}
-                          {isRecipeVegan(item.extra) && (
-                            <span title="Vegan">🌱</span>
-                          )}
-                          {item.extra.calories && (
-                            <span
-                              className={`text-[10px] px-1.5 py-0.5 rounded font-semibold ${
-                                isDark
-                                  ? "bg-amber-950/80 text-amber-300"
-                                  : "bg-amber-100 text-amber-900"
-                              }`}
-                            >
-                              🔥 {item.extra.calories} kcal
-                            </span>
-                          )}
                         </p>
                       )}
                     </div>
@@ -800,7 +824,9 @@ export default function App() {
                         {item.name}
                       </span>
                       <span
-                        className={`font-bold ${isDark ? "text-rose-300" : "text-sky-900"}`}
+                        className={`font-bold ${
+                          isDark ? "text-rose-300" : "text-sky-900"
+                        }`}
                       >
                         {item.amount} {item.unit}
                       </span>
@@ -828,6 +854,12 @@ export default function App() {
           </div>
         )}
       </div>
+
+      <AddRecipeModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onRecipeAdded={handleRecipeAdded}
+      />
     </div>
   );
 }
