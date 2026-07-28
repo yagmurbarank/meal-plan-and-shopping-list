@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { fetchRecipes } from "./services/recipeService";
 import Logo from "./components/Logo";
-import AddRecipeModal from "./AddRecipeModal";
+import AddRecipeModal from "./components/AddRecipeModal";
+import RecipeDetailModal from "./components/RecipeDetailModal"; 
 import {
   isRecipeGlutenFree,
   isRecipeVegan,
@@ -23,6 +24,8 @@ export default function App() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+  const [selectedRecipeForDetail, setSelectedRecipeForDetail] = useState(null);
 
   const [servings, setServings] = useState(2);
   const [tempDaySelection, setTempDaySelection] = useState({
@@ -84,13 +87,12 @@ export default function App() {
   }, []);
 
   const handleNextDay = () => {
-
     if (!isMainCourseSelected) {
       setErrorMessage("Lütfen en az bir Ana Yemek seçin!");
 
       setTimeout(() => {
         setErrorMessage("");
-      }, 2000);
+      }, 1500);
       return;
     }
 
@@ -115,7 +117,7 @@ export default function App() {
       ]);
     } else if (selectedRecipes.length === 0) {
       setErrorMessage("Lütfen en az 1 günlük menü seçin!");
-      setTimeout(() => setErrorMessage(""), 3000);
+      setTimeout(() => setErrorMessage(""), 1500);
       return;
     }
 
@@ -148,6 +150,73 @@ export default function App() {
     });
     return total;
   };
+
+  const renderCategoryList = (category, searchTerm, categoryName) => (
+    <div className="flex-grow overflow-y-auto pr-1 space-y-1.5">
+      {filterCategory(category, searchTerm).map((recipe) => {
+        const isSelected = tempDaySelection[category]?.id === recipe.id;
+        return (
+          <div
+            key={recipe.id}
+            onClick={() => handleSelectRecipe(category, recipe)}
+            className={`w-full text-left p-2 rounded-xl border text-xs transition-all flex items-center justify-between gap-2 cursor-pointer select-none ${
+              isSelected
+                ? isDark
+                  ? "border-rose-500 bg-rose-900/90 text-rose-100 font-semibold shadow-md"
+                  : "border-sky-600 bg-sky-800 text-white font-semibold shadow-md"
+                : isDark
+                  ? "border-rose-900/30 hover:border-rose-700 bg-slate-900/80 text-slate-200"
+                  : "border-sky-100 hover:border-sky-300 bg-white/90 text-slate-800 shadow-sm"
+            }`}
+ >
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedRecipeForDetail(recipe); 
+              }}
+              title="Tarif Detayını Gör"
+              className={`flex-shrink-0 px-2 py-1 rounded-lg font-bold text-[11px] flex items-center gap-1 transition-all duration-200 cursor-pointer border ${
+                isSelected
+                  ? "bg-white/20 text-white border-white/30 hover:bg-white/30"
+                  : isDark
+                    ? "bg-rose-950/80 hover:bg-rose-900 text-rose-300 border-rose-800/50"
+                    : "bg-sky-100 hover:bg-sky-200 text-sky-900 border-sky-200 shadow-sm"
+              }`}
+            >
+              <span>🧾</span>
+            </button>
+
+
+            <span className="truncate font-medium flex-grow">
+              {recipe.title}
+            </span>
+
+            <div className="flex items-center gap-1 flex-shrink-0 text-xs">
+              {recipe.cuisine === "world" && (
+                <span title="Dünya Mutfağı">🌍</span>
+              )}
+              {isRecipeGlutenFree(recipe) && <span title="Glutensiz">🌾</span>}
+              {isRecipeVegan(recipe) && <span title="Vegan">🌱</span>}
+
+              {recipe.calories && (
+                <span
+                  className={`text-[10px] px-1.5 py-0.5 rounded font-semibold ${
+                    isSelected
+                      ? "bg-white/20 text-white"
+                      : isDark
+                        ? "bg-amber-950/80 text-amber-300 border border-amber-800/40"
+                        : "bg-amber-100 text-amber-900"
+                  }`}
+                >
+                  🔥 {recipe.calories} kcal
+                </span>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
 
   if (loading) {
     return (
@@ -182,11 +251,8 @@ export default function App() {
                 : "bg-red-600/95 border-red-400 text-white shadow-red-600/30"
             }`}
           >
-    
             <span className="text-base bg-white/20 p-1 rounded-lg">⚠️</span>
-
             <span className="font-medium tracking-wide">{errorMessage}</span>
-
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -223,7 +289,6 @@ export default function App() {
         >
           <div className="text-left flex items-center gap-2.5">
             <Logo className="w-9 h-9 sm:w-10 sm:h-10" isDark={isDark} />
-
             <div>
               <h1
                 className={`text-lg font-bold flex items-center gap-2 ${
@@ -239,7 +304,7 @@ export default function App() {
               >
                 {!isFinished
                   ? `${currentDay}. Gün Menüsünü Oluşturuyorsun`
-                  : `🎉 ${selectedRecipes.length} Günlük Menün ve Alışveriş Listen`}
+                  : ` `}
               </p>
             </div>
           </div>
@@ -316,7 +381,6 @@ export default function App() {
           </div>
         </header>
 
-        {/* Filtre Barı */}
         {!isFinished && (
           <div
             className={`flex flex-wrap items-center justify-start gap-4 mb-3 px-3 py-2 rounded-xl border print:hidden transition-colors ${
@@ -365,7 +429,7 @@ export default function App() {
         {!isFinished ? (
           <div className="flex flex-col flex-grow overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 flex-grow overflow-hidden">
-    
+
               <section
                 className={`p-3 rounded-xl border flex flex-col overflow-hidden relative ${
                   isDark ? "border-rose-900/50" : "border-rose-200"
@@ -384,7 +448,6 @@ export default function App() {
                     isDark ? "bg-slate-950/75" : "bg-rose-50/85"
                   }`}
                 />
-
                 <div className="relative z-10 flex flex-col h-full overflow-hidden">
                   <h2 className="font-semibold text-sm mb-2">
                     <span
@@ -406,49 +469,7 @@ export default function App() {
                         : "bg-white border-rose-200 text-slate-800 focus:border-rose-400 shadow-sm"
                     }`}
                   />
-                  <div className="flex-grow overflow-y-auto pr-1 space-y-1.5">
-                    {filterCategory("main", searchMain).map((recipe) => (
-                      <button
-                        key={recipe.id}
-                        onClick={() => handleSelectRecipe("main", recipe)}
-                        className={`w-full text-left p-2 rounded-lg border text-xs transition-all flex items-center justify-between gap-1 ${
-                          tempDaySelection.main?.id === recipe.id
-                            ? isDark
-                              ? "border-rose-500 bg-rose-900/90 text-rose-100 font-semibold shadow-sm"
-                              : "border-rose-600 bg-rose-600 text-white font-semibold shadow-sm"
-                            : isDark
-                              ? "border-rose-900/30 hover:border-rose-700 bg-slate-900/80 text-slate-200"
-                              : "border-rose-200/60 hover:border-rose-300 bg-white/90 text-slate-800 shadow-sm"
-                        }`}
-                      >
-                        <span className="truncate">{recipe.title}</span>
-                        <div className="flex items-center gap-1.5 flex-shrink-0 text-xs">
-                          {recipe.cuisine === "world" && (
-                            <span title="Dünya Mutfağı">🌍</span>
-                          )}
-                          {isRecipeGlutenFree(recipe) && (
-                            <span title="Glutensiz">🌾</span>
-                          )}
-                          {isRecipeVegan(recipe) && (
-                            <span title="Vegan">🌱</span>
-                          )}
-                          {recipe.calories && (
-                            <span
-                              className={`text-[10px] px-1.5 py-0.5 rounded font-semibold ${
-                                tempDaySelection.main?.id === recipe.id
-                                  ? "bg-white/20 text-white"
-                                  : isDark
-                                    ? "bg-amber-950/80 text-amber-300 border border-amber-800/40"
-                                    : "bg-amber-100 text-amber-900"
-                              }`}
-                            >
-                              🔥 {recipe.calories} kcal
-                            </span>
-                          )}
-                        </div>
-                      </button>
-                    ))}
-                  </div>
+                  {renderCategoryList("main", searchMain, "Ana Yemek")}
                 </div>
               </section>
 
@@ -470,7 +491,6 @@ export default function App() {
                     isDark ? "bg-slate-950/75" : "bg-amber-50/85"
                   }`}
                 />
-
                 <div className="relative z-10 flex flex-col h-full overflow-hidden">
                   <h2 className="font-semibold text-sm mb-2">
                     <span
@@ -492,52 +512,11 @@ export default function App() {
                         : "bg-white border-amber-200 text-slate-800 focus:border-amber-400 shadow-sm"
                     }`}
                   />
-                  <div className="flex-grow overflow-y-auto pr-1 space-y-1.5">
-                    {filterCategory("side", searchSide).map((recipe) => (
-                      <button
-                        key={recipe.id}
-                        onClick={() => handleSelectRecipe("side", recipe)}
-                        className={`w-full text-left p-2 rounded-lg border text-xs transition-all flex items-center justify-between gap-1 ${
-                          tempDaySelection.side?.id === recipe.id
-                            ? isDark
-                              ? "border-amber-500 bg-amber-900/90 text-amber-100 font-semibold shadow-sm"
-                              : "border-amber-600 bg-amber-600 text-white font-semibold shadow-sm"
-                            : isDark
-                              ? "border-amber-900/30 hover:border-amber-700 bg-slate-900/80 text-slate-200"
-                              : "border-amber-200/60 hover:border-amber-300 bg-white/90 text-slate-800 shadow-sm"
-                        }`}
-                      >
-                        <span className="truncate">{recipe.title}</span>
-                        <div className="flex items-center gap-1.5 flex-shrink-0 text-xs">
-                          {recipe.cuisine === "world" && (
-                            <span title="Dünya Mutfağı">🌍</span>
-                          )}
-                          {isRecipeGlutenFree(recipe) && (
-                            <span title="Glutensiz">🌾</span>
-                          )}
-                          {isRecipeVegan(recipe) && (
-                            <span title="Vegan">🌱</span>
-                          )}
-                          {recipe.calories && (
-                            <span
-                              className={`text-[10px] px-1.5 py-0.5 rounded font-semibold ${
-                                tempDaySelection.side?.id === recipe.id
-                                  ? "bg-white/20 text-white"
-                                  : isDark
-                                    ? "bg-amber-950/80 text-amber-300 border border-amber-800/40"
-                                    : "bg-amber-100 text-amber-900"
-                              }`}
-                            >
-                              🔥 {recipe.calories} kcal
-                            </span>
-                          )}
-                        </div>
-                      </button>
-                    ))}
-                  </div>
+                  {renderCategoryList("side", searchSide, "Eşlikçi")}
                 </div>
               </section>
 
+              {/* Çorba / Meze Kolonu */}
               <section
                 className={`p-3 rounded-xl border flex flex-col overflow-hidden relative ${
                   isDark ? "border-emerald-900/50" : "border-emerald-200"
@@ -556,7 +535,6 @@ export default function App() {
                     isDark ? "bg-slate-950/75" : "bg-emerald-50/85"
                   }`}
                 />
-
                 <div className="relative z-10 flex flex-col h-full overflow-hidden">
                   <h2 className="font-semibold text-sm mb-2">
                     <span
@@ -580,49 +558,7 @@ export default function App() {
                         : "bg-white border-emerald-200 text-slate-800 focus:border-emerald-400 shadow-sm"
                     }`}
                   />
-                  <div className="flex-grow overflow-y-auto pr-1 space-y-1.5">
-                    {filterCategory("extra", searchExtra).map((recipe) => (
-                      <button
-                        key={recipe.id}
-                        onClick={() => handleSelectRecipe("extra", recipe)}
-                        className={`w-full text-left p-2 rounded-lg border text-xs transition-all flex items-center justify-between gap-1 ${
-                          tempDaySelection.extra?.id === recipe.id
-                            ? isDark
-                              ? "border-emerald-500 bg-emerald-900/90 text-emerald-100 font-semibold shadow-sm"
-                              : "border-emerald-600 bg-emerald-600 text-white font-semibold shadow-sm"
-                            : isDark
-                              ? "border-emerald-900/30 hover:border-emerald-700 bg-slate-900/80 text-slate-200"
-                              : "border-emerald-200/60 hover:border-emerald-300 bg-white/90 text-slate-800 shadow-sm"
-                        }`}
-                      >
-                        <span className="truncate">{recipe.title}</span>
-                        <div className="flex items-center gap-1.5 flex-shrink-0 text-xs">
-                          {recipe.cuisine === "world" && (
-                            <span title="Dünya Mutfağı">🌍</span>
-                          )}
-                          {isRecipeGlutenFree(recipe) && (
-                            <span title="Glutensiz">🌾</span>
-                          )}
-                          {isRecipeVegan(recipe) && (
-                            <span title="Vegan">🌱</span>
-                          )}
-                          {recipe.calories && (
-                            <span
-                              className={`text-[10px] px-1.5 py-0.5 rounded font-semibold ${
-                                tempDaySelection.extra?.id === recipe.id
-                                  ? "bg-white/20 text-white"
-                                  : isDark
-                                    ? "bg-amber-950/80 text-amber-300 border border-amber-800/40"
-                                    : "bg-amber-100 text-amber-900"
-                              }`}
-                            >
-                              🔥 {recipe.calories} kcal
-                            </span>
-                          )}
-                        </div>
-                      </button>
-                    ))}
-                  </div>
+                  {renderCategoryList("extra", searchExtra, "Çorba / Meze")}
                 </div>
               </section>
             </div>
@@ -651,7 +587,6 @@ export default function App() {
             </div>
           </div>
         ) : (
-     
           <div className="flex flex-col flex-grow overflow-hidden print:overflow-visible print:h-auto py-1">
             <div className="flex justify-between items-center mb-3 flex-shrink-0">
               <h2
@@ -824,9 +759,7 @@ export default function App() {
                         {item.name}
                       </span>
                       <span
-                        className={`font-bold ${
-                          isDark ? "text-rose-300" : "text-sky-900"
-                        }`}
+                        className={`font-bold ${isDark ? "text-rose-300" : "text-sky-900"}`}
                       >
                         {item.amount} {item.unit}
                       </span>
@@ -840,8 +773,12 @@ export default function App() {
               onClick={() => {
                 setCurrentDay(1);
                 setSelectedRecipes([]);
+                setTempDaySelection({ main: null, side: null, extra: null }); 
                 setServings(2);
-                setIsFinished(false);
+                setSearchMain("");
+                setSearchSide("");
+                setSearchExtra("");
+                setIsFinished(false); 
               }}
               className={`w-full mt-3 font-semibold py-2.5 px-4 rounded-xl transition-all flex-shrink-0 text-xs print:hidden border ${
                 isDark
@@ -855,10 +792,17 @@ export default function App() {
         )}
       </div>
 
+      {/* MODALLAR */}
       <AddRecipeModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onRecipeAdded={handleRecipeAdded}
+      />
+
+      <RecipeDetailModal
+        recipe={selectedRecipeForDetail}
+        onClose={() => setSelectedRecipeForDetail(null)}
+        isDark={isDark}
       />
     </div>
   );

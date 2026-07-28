@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { recipeService } from "./services/recipeService"; 
+import { recipeService } from "../services/recipeService"; 
 
 const AddRecipeModal = ({ isOpen, onClose, onRecipeAdded }) => {
   const [formData, setFormData] = useState({
